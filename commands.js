@@ -1,4 +1,10 @@
-export async function addNote(){
+import fs from "fs";
+import chalk from "chalk";
+import readline from "readline";
+
+const FILE_PATH = "notes.json";
+
+export async function addNote(target,notes,saveNotes){
     if (!target) {
         console.log(chalk.red("Error: Please specify a task description to add."));
         return;
@@ -15,7 +21,7 @@ export async function addNote(){
     console.log(chalk.green(`Task added: ${target}`));
 }
 
-export async function listNotes(){
+export async function listNotes(notes){
     if(notes.length === 0){
             console.log(chalk.yellow("No notes saved yet."));
         }
@@ -28,7 +34,7 @@ export async function listNotes(){
      });
 }
 
-export async function readNotes(){
+export async function readNotes(target,notes){
     if (!target) {
         console.log(chalk.red("Error: please provide a note ID."));
         return;
@@ -46,7 +52,7 @@ export async function readNotes(){
     console.log(`${noteToRead.id}. ${chalk.yellow(noteToRead.createdAt)} - ${chalk.blue.bold(noteToRead.text)}`);
 }
 
-export async function deleteNotes(){
+export async function deleteNotes(target,notes){
     const idToDelete = parseInt(target);
     const initialiseLength = notes.length;
     const filternotes = notes.filter((note) => note.id !==idToDelete );  
@@ -58,7 +64,7 @@ export async function deleteNotes(){
     console.log(`${idToDelete} was deleted successfully.`);
 }
 
-export async function searchNotes(){
+export async function searchNotes(target,notes){
     const keyword = target.toLowerCase();
     const matchedNotes = notes.filter((note) => note.text.toLowerCase().includes(keyword) || note.createdAt.toLowerCase().includes(keyword) || String(note.id) === keyword);
 
@@ -71,7 +77,7 @@ export async function searchNotes(){
     });
 }
 
-export async function clearNotes(){
+export async function clearNotes(saveNotes){
     const rl = readline.createInterface({
         input: process.stdin, 
         output: process.stdout,
