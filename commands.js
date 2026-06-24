@@ -39,7 +39,7 @@ export async function readNotes(target,notes){
         console.log(chalk.red("Error: please provide a note ID."));
         return;
     }
-    const noteId = Number(target);
+    const noteId = Number(target.notes);
     if (!Number.isInteger(noteId) || noteId <= 0) {
         console.log(chalk.red("Error: note ID must be a positive integer."));
         return;
