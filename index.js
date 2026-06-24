@@ -1,4 +1,5 @@
-import { readNotes, saveNotes } from "./storage.js";
+import chalk from "chalk";
+import { readNotes } from "./storage.js";
 import { addNote, listNote, readNote, deleteNote, searchNote, clearNote } from "./commands.js";
 
 export async function main(){
@@ -9,7 +10,7 @@ export async function main(){
 
     switch(action){
         case "add":
-            await addNote(target,notes,saveNotes);
+            await addNote(target,notes);
             break;
         case "list":
             await listNote(notes);
@@ -18,16 +19,23 @@ export async function main(){
             await readNote(target,notes);
             break;
         case "delete":
-            await deleteNote(target,notes,saveNotes);
+            await deleteNote(target,notes);
             break;
         case "search":
             await searchNote(target,notes);
             break;
         case "clear":
-            await clearNote(notes,saveNotes);
+            await clearNote(notes);
             break;
         default:
-            console.log("target");
-    }
+            console.log(chalk.magenta("Available commands:"));
+            console.log("  add a note");
+            console.log("  list all notes");
+            console.log("  read a specific note");
+            console.log("  delete a specific note");
+            console.log("  search through note");
+            console.log("  clear all notes");
+            break;
+        }
 }
 main();

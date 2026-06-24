@@ -1,10 +1,8 @@
-import fs from "fs";
 import chalk from "chalk";
 import readline from "readline";
+import { saveNotes } from "./storage.js";
 
-const FILE_PATH = "notes.json";
-
-export async function addNote(target,notes,saveNotes){
+export async function addNote(target,notes){
     if (!target) {
         console.log(chalk.red("Error: Please specify a task description to add."));
         return;
@@ -18,7 +16,7 @@ export async function addNote(target,notes,saveNotes){
     };
     notes.push(newNote);
     await saveNotes(notes);
-    console.log(chalk.green(`Task added: ${target}`));
+    console.log(chalk.green(`Note added: ${target}`));
 }
 
 export async function listNote(notes){
@@ -39,13 +37,13 @@ export async function readNote(target,notes){
     const noteId = Number(target);
     const noteToRead = notes.find((note) => note.id === noteId);
       if (!noteToRead) {
-        console.log(chalk.yellow(`ID ${noteId} not found.`));
+        console.log(chalk.yellow(`ID not found.`));
         return;
     }
     console.log(`${noteToRead.id}. ${chalk.yellow(noteToRead.createdAt)} - ${chalk.blue.bold(noteToRead.text)}`);
 }
 
-export async function deleteNote(target,notes,saveNotes){
+export async function deleteNote(target,notes){
     const idToDelete = parseInt(target);
     if (isNaN(idToDelete)) {
     console.log(chalk.red("Error: Please provide a valid numeric ID."));
@@ -78,7 +76,7 @@ export async function searchNote(target,notes){
     });
 }
 
-export async function clearNote(notes,saveNotes){
+export async function clearNote(notes){
     const rl = readline.createInterface({
         input: process.stdin, 
         output: process.stdout,
