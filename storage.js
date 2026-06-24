@@ -1,7 +1,11 @@
 import fs from 'fs';
 import chalk from 'chalk';
 import path from 'path';
-const FILE_PATH = path.join('notes.json');
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const FILE_PATH = path.join(__dirname,'notes.json');
 
 export async function readNotes() {
   try {
