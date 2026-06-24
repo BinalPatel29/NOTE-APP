@@ -8,5 +8,10 @@
     "id": 3,
     "text": "Fix login bug preventing user authentication",
     "createdAt": "24/06/2026"
+  },
+  {
+    "id": 4,
+    "text": "Test note",
+    "createdAt": "24/06/2026"
   }
 ]
