@@ -1,3 +1,8 @@
+import fs from 'fs';
+import chalk from 'chalk';
+
+const FILE_PATH = 'notes.json';
+
 export async function readNotes() {
   try {
     await fs.promises.access(FILE_PATH);
