@@ -10,7 +10,7 @@ export async function addNote(target,notes,saveNotes){
         return;
     }
     const now = new Date();
-    const dateStr = `$(String(now.getDate()).padStart(2,"0")}/ ${String(now.getMonth() +1).padStart(2, "0")}/ ${now.getFullYear()})`;
+    const dateStr = `${String(now.getDate()).padStart(2, "0")}/${String(now.getMonth() + 1).padStart(2, "0")}/${now.getFullYear()}`;
     const newNote = {
         id: notes.length > 0 ? notes[notes.length - 1].id + 1 : 1,
         text: target,
@@ -21,29 +21,22 @@ export async function addNote(target,notes,saveNotes){
     console.log(chalk.green(`Task added: ${target}`));
 }
 
-export async function listNotes(notes){
+export async function listNote(notes){
     if(notes.length === 0){
             console.log(chalk.yellow("No notes saved yet."));
         }
     notes.forEach((note) => {
-        if (note.text.length > 40) {
-          console.log(chalk.green(`${note.text.slice(0, 40)}...`));
-        } else {
-          console.log(`${note.id}. ${chalk.yellow(note.createdAt)} - ${chalk.blue.bold(note.text)} `);
-        }
+        const displayText = note.text.length > 40 ? `${note.text.slice(0, 40)}...` : note.text;
+        console.log(`${note.id}. ${chalk.yellow(note.createdAt)} - ${chalk.blue.bold(displayText)}`); 
      });
 }
 
-export async function readNotes(target,notes){
+export async function readNote(target,notes){
     if (!target) {
         console.log(chalk.red("Error: please provide a note ID."));
         return;
     }
-    const noteId = Number(target.notes);
-    if (!Number.isInteger(noteId) || noteId <= 0) {
-        console.log(chalk.red("Error: note ID must be a positive integer."));
-        return;
-    }
+    const noteId = Number(target);
     const noteToRead = notes.find((note) => note.id === noteId);
       if (!noteToRead) {
         console.log(chalk.yellow(`ID ${noteId} not found.`));
@@ -52,11 +45,15 @@ export async function readNotes(target,notes){
     console.log(`${noteToRead.id}. ${chalk.yellow(noteToRead.createdAt)} - ${chalk.blue.bold(noteToRead.text)}`);
 }
 
-export async function deleteNotes(target,notes){
+export async function deleteNote(target,notes,saveNotes){
     const idToDelete = parseInt(target);
-    const initialiseLength = notes.length;
+    if (isNaN(idToDelete)) {
+    console.log(chalk.red("Error: Please provide a valid numeric ID."));
+    return;
+    }
+    const initialLength = notes.length;
     const filternotes = notes.filter((note) => note.id !==idToDelete );  
-    if(filternotes.length === initialiseLength){
+    if(filternotes.length === initialLength){
         console.log(chalk.red("Error: Note ID not found."));
         return;
     }
@@ -64,7 +61,11 @@ export async function deleteNotes(target,notes){
     console.log(`${idToDelete} was deleted successfully.`);
 }
 
-export async function searchNotes(target,notes){
+export async function searchNote(target,notes){
+    if (!target) {
+        console.log(chalk.red("Error: Please provide a search term."));
+        return;
+    }
     const keyword = target.toLowerCase();
     const matchedNotes = notes.filter((note) => note.text.toLowerCase().includes(keyword) || note.createdAt.toLowerCase().includes(keyword) || String(note.id) === keyword);
 
@@ -77,7 +78,7 @@ export async function searchNotes(target,notes){
     });
 }
 
-export async function clearNotes(saveNotes){
+export async function clearNote(notes,saveNotes){
     const rl = readline.createInterface({
         input: process.stdin, 
         output: process.stdout,
@@ -87,7 +88,7 @@ export async function clearNotes(saveNotes){
           await saveNotes([]);
           rl.close();
         } else {
-          console.log("clear close!");
+          console.log("Clear action canceled.");
         }
         rl.close();
     });

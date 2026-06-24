@@ -1,5 +1,5 @@
 import { readNotes, saveNotes } from "./storage.js";
-import { addNote, listNotes, readNotes, deleteNotes, searchNotes, clearNotes } from "./commands.js";
+import { addNote, listNote, readNote, deleteNote, searchNote, clearNote } from "./commands.js";
 
 export async function main(){
     const argv = process.argv.slice(2);
@@ -12,19 +12,19 @@ export async function main(){
             await addNote(target,notes,saveNotes);
             break;
         case "list":
-            await listNotes(notes);
+            await listNote(notes);
             break;
         case "read":
-            await readNotes(target,notes);
+            await readNote(target,notes);
             break;
         case "delete":
-            await deleteNotes(target,notes);
+            await deleteNote(target,notes,saveNotes);
             break;
         case "search":
-            await searchNotes(target,notes);
+            await searchNote(target,notes);
             break;
         case "clear":
-            await clearNotes(saveNotes);
+            await clearNote(notes,saveNotes);
             break;
         default:
             console.log("target");
